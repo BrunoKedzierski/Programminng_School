@@ -6,6 +6,7 @@ import service.DbService;
 
 import javax.jws.soap.SOAPBinding;
 import java.sql.SQLException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -59,8 +60,11 @@ public class UserManagment {
                     }
                     int group = scan.nextInt();
                     while (Group.getGroupById(group).getId() == -1){
-                        System.out.println("This id does not exist. Try again!");
-                        group = scan.nextInt();
+                        try{group = scan.nextInt();}
+                        catch (InputMismatchException e){
+                            System.out.println("Type a valid id");
+                            return;
+                        }
 
                     }
 
@@ -78,7 +82,11 @@ public class UserManagment {
                     int id = scan.nextInt();
                     while (User.getUserById(id).getId() == -1){
                         System.out.println("This id does not exist. Try again!");
-                        id = scan.nextInt();
+                        try{id = scan.nextInt();}
+                        catch (InputMismatchException e){
+                            System.out.println("Type a valid id");
+                            return;
+                        }id = scan.nextInt();
 
                     }
                     scan.nextLine();
@@ -96,7 +104,11 @@ public class UserManagment {
                     int group = scan.nextInt();
                     while (Group.getGroupById(group).getId() == -1){
                         System.out.println("This id does not exist. Try again!");
-                        group = scan.nextInt();
+                        try{group = scan.nextInt();}
+                        catch (InputMismatchException e){
+                            System.out.println("Type a valid id");
+                            return;
+                        }
 
                     }
 
@@ -121,8 +133,11 @@ public class UserManagment {
 
                     int id = scan.nextInt();
                     while (User.getUserById(id).getId() == -1){
-                        System.out.println("This id does not exist. Try again");
-                        id = scan.nextInt();
+                        try{id = scan.nextInt();}
+                        catch (InputMismatchException e){
+                            System.out.println("Type a valid id");
+                            return;
+                        }
 
                     }
 

@@ -8,6 +8,7 @@ import service.DbService;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -25,7 +26,7 @@ public class ExerciseManagment {
         String query = "SELECT * FROM exercise";
         try {
             List<String[]> rows = DbService.getData(query, null);
-            for(String [] row : rows){
+            for (String[] row : rows) {
                 int id = Integer.parseInt(row[0]);
                 String title = row[1];
                 String description = row[2];
@@ -38,6 +39,7 @@ public class ExerciseManagment {
         }
 
     }
+
     private static void manageExercise() {
         String answer = "";
         do {
@@ -50,7 +52,7 @@ public class ExerciseManagment {
                 System.out.println("Input description");
                 String description = scan.nextLine();
                 System.out.println("Input");
-                Exercise exercise = new Exercise(title,description);
+                Exercise exercise = new Exercise(title, description);
                 exercise.saveToDb();
                 showAllExer();
 
@@ -62,9 +64,14 @@ public class ExerciseManagment {
                     scan.next();
                 }
                 int id = scan.nextInt();
-                while (Exercise.getExerciseById(id).getId() == -1){
+                while (Exercise.getExerciseById(id).getId() == -1) {
                     System.out.println("This id does not exist. Try again!");
-                    id = scan.nextInt();
+                    try {
+                        id = scan.nextInt();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Type a valid id");
+                        return;
+                    }
 
                 }
                 scan.nextLine();
@@ -88,23 +95,27 @@ public class ExerciseManagment {
                 }
 
                 int id = scan.nextInt();
-                while (Exercise.getExerciseById(id).getId() == -1){
-                    System.out.println("This id does not exist. Try again");
-                    id = scan.nextInt();
+                while (Exercise.getExerciseById(id).getId() == -1) {
+                    try {
+                        id = scan.nextInt();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Type a valid id");
+                        return;
+                    }
+
+                    Exercise exercise = Exercise.getExerciseById(id);
+                    exercise.delete();
+                    showAllExer();
+
 
                 }
 
-                Exercise exercise = Exercise.getExerciseById(id);
-                exercise.delete();
-                showAllExer();
-
-
             }
-
         } while (!answer.equalsIgnoreCase("close"));
 
     }
 
 
-    }
+}
+
 
